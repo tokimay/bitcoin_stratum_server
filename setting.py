@@ -3,7 +3,6 @@ import socket
 import configparser
 from datetime import datetime
 import globalVariable
-from correspondence.bitcoind import get_address_info
 
 
 class FStyle:
@@ -54,16 +53,14 @@ def load_setting() -> bool:
         globalVariable.bitcoinCore_password = config['bitcoin.conf']['rpcpassword']
         globalVariable.bitcoinCore_port = config['bitcoin.conf']['port']
         globalVariable.START_DIFFICULTY = int(config['difficulty']['start_difficulty'])
-        globalVariable.SCRIPT_PUBKEY = get_address_info(1, config['address']['btc_address'])['result']['scriptPubKey']
-
-
+        globalVariable.BTC_ADDRESS = config['address']['btc_address']
         return True
     except Exception as er:
         server_log(LogTypes.ERROR, f"load_setting", er)
         return False
 
 
-async def delete_btc_prion_job_data():
+def delete_btc_prior_job_data():
     try:
         job_dir = 'activeJobs'
         for fileName in os.listdir(job_dir):

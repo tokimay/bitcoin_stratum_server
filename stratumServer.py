@@ -2,12 +2,14 @@ import base64
 import _asyncio
 import asyncio
 import os
+import random
 from datetime import timedelta, datetime
 from correspondence import calculation
+from correspondence.bitcoind import get_address_info
 from protocols.stratum import requestParser
 from protocols.stratum.stratum import notify, set_difficulty
 from protocols.client import Worker
-from setting import is_port_available, load_setting, server_log, LogTypes, delete_btc_prion_job_data
+from setting import is_port_available, load_setting, server_log, LogTypes, delete_btc_prior_job_data
 import globalVariable
 
 class Server:
@@ -23,12 +25,15 @@ class Server:
             globalVariable.bitcoinCore_rpcUrl = globalVariable.bitcoinCore_host + ":" + globalVariable.bitcoinCore_port
             globalVariable.bitcoinCore_authenticate = base64.b64encode(
                 bytes(globalVariable.bitcoinCore_user + ":" + globalVariable.bitcoinCore_password, "utf8"))
+            globalVariable.SCRIPT_PUBKEY = get_address_info(random.randint(0x0, 0xf),
+                                                            globalVariable.BTC_ADDRESS)['result']['scriptPubKey']
         else:
             exit(1)
         if not is_port_available(self._bindPort):
             exit(1)
 
     def run_server(self):
+        delete_btc_prior_job_data()
         self._serverTask = self._loop.create_task(self._run_server(), name='PyPool')
         asyncio.ensure_future(self.send_clients_job(), loop=self._loop)
         asyncio.ensure_future(self.bitcoin_block(), loop=self._loop)
@@ -167,7 +172,7 @@ class Server:
             current_block_height=self._bitcoinCurrentBlockHeight)
         if self._currentBitcoinNotifyTemplate:
             if tmp != self._bitcoinCurrentBlockHeight and tmp: # and tmp means tmp is not 0
-                await delete_btc_prion_job_data()
+                await delete_btc_prior_job_data()
                 await self.cancel_all_prior_jobs()
             return True
         else:

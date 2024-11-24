@@ -125,9 +125,7 @@ def notify_body(current_block_height: int) -> tuple[list, int]:
             height=block['result']['height'],
             coinbase_amount=block['result']['coinbasevalue'],
             script_pubkey_witness=block['result']['default_witness_commitment'],
-            script_pubkey='0000')
-            #script_pubkey='0000')
-
+            script_pubkey=globalVariable.SCRIPT_PUBKEY)
 
         merkle_trx = []
         if len(block['result']['transactions']) > 0:
