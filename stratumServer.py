@@ -33,7 +33,6 @@ class Server:
             exit(1)
 
     def run_server(self):
-        delete_btc_prior_job_data()
         self._serverTask = self._loop.create_task(self._run_server(), name='PyPool')
         asyncio.ensure_future(self.send_clients_job(), loop=self._loop)
         asyncio.ensure_future(self.bitcoin_block(), loop=self._loop)
@@ -172,7 +171,7 @@ class Server:
             current_block_height=self._bitcoinCurrentBlockHeight)
         if self._currentBitcoinNotifyTemplate:
             if tmp != self._bitcoinCurrentBlockHeight and tmp: # and tmp means tmp is not 0
-                await delete_btc_prior_job_data()
+                delete_btc_prior_job_data()
                 await self.cancel_all_prior_jobs()
             return True
         else:
@@ -190,5 +189,6 @@ class Server:
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))  # setWorking directory an scrypt location
+    delete_btc_prior_job_data()
     stratumServer = Server(bind_ip='localhost', bind_port=3333)
     stratumServer.run_server()
