@@ -39,7 +39,7 @@ Server tested in ***main-net*** and ***reg-test*** using
   {"id": 2, "result": true, "error": null}
   ````
   id = int, response number </br>
-  result = bool, if every thing is ok True </br>
+  result = bool, is every thing ok </br>
   error = bool, is there any error </br>
   </br> 
 - **mining.extranonce_subscribe**:
