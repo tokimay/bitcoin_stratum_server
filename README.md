@@ -21,7 +21,7 @@ Server tested in ***main-net*** and ***reg-test*** using
   ````shell
   {"id": 1, "result": [[["mining.set_difficulty", 32]], "0BFCC3F18A1605AE", 8], "error": null}
   ````
-  id = int, request number </br>
+  id = int, response number </br>
   result = list, [[set start worker difficulty], extraNonce1, len of extraNonce2] </br>
   error = bool, is there any error </br>
   </br> 
@@ -32,21 +32,25 @@ Server tested in ***main-net*** and ***reg-test*** using
   ````
   id = int, request number </br>
   method = str, "mining.authorize" </br>
-  params = list, [worker address as UserName, worker password] </br>
+  params = list, [worker address as Username, worker password] </br>
   </br> 
   + response body example:
   ````shell
   {"id": 2, "result": true, "error": null}
   ````
-  id = int, request number </br>
-  result = bool, if not support False </br>
+  id = int, response number </br>
+  result = bool, if every thing is ok True </br>
   error = bool, is there any error </br>
   </br> 
 - **mining.extranonce_subscribe**:
   + request body example:
   ````shell
   {"id": 3, "method": "mining.extranonce.subscribe", "params": []}
-    ```` 
+  ```` 
+  id = int, response number </br>
+  result = bool, if not support False </br>
+  error = bool, is there any error </br>
+  </br>
   - response body example:
   ````shell
   {"id": 3, "result": false, "error": null}
