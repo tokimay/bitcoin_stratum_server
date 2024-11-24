@@ -165,7 +165,7 @@ class Worker:
             response_message_bytes = response_message_bytes.encode('UTF-8')
             self._writer.write(response_message_bytes)
             await self._writer.drain()
-            if 'method' in response_message:
+            if 'method' in response_message and response_message['method'] == 'mining.notify':
                 self.set_last_job_id(response_message['params'][0])
             return True
         except Exception as er:
