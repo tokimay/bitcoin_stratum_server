@@ -88,7 +88,7 @@ Server tested in ***main-net*** and ***reg-test*** using
   *bool does worker should forget previous job* </br>
   ]</br>
   ***notice:***</br>
-  *previous block hash* is in [crazy format](https://stackoverflow.com/questions/66412968/hash-of-previous-block-from-stratum-protocol) by hashing little endian each 4-Byte separate. </br>
+  *previous block hash* is in [crazy format](https://stackoverflow.com/questions/66412968/hash-of-previous-block-from-stratum-protocol) by changing to little endian each 4-Byte separate. </br>
   *merkle branch* is not all transaction IDs in block. It is a pre-calculate of transaction IDs hash.
   </br>
 - **mining.submit:**
