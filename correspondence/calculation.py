@@ -243,7 +243,7 @@ def generate_block(job_id: str, extra_nonce1: str, extra_nonce2: str, time: str,
         block_raw, block_header, target = get_block_row(job_id, extra_nonce1, extra_nonce2, time, nonce)
         submit_result = bitcoind.submit_block(worker_id=random.randint(0x0, 0xf), hex_data=block_raw)
         if submit_result:
-            server_log(LogTypes.WARNING, f"generating block in block chain returned by result",
+            server_log(LogTypes.WARNING, f"Submitting the block to the blockchain returns the result",
                        F"{submit_result['result']}")
             if submit_result['result'] is None:
                 return 0  # no error

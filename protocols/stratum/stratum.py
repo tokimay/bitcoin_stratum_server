@@ -2,7 +2,7 @@ import datetime
 import random
 import globalVariable
 from correspondence import calculation
-from correspondence.server2client import response, job_response, login_response
+from correspondence.server2client import response, job_response
 from protocols.client import Worker
 from setting import ServerException, server_log, LogTypes
 
@@ -21,7 +21,7 @@ def subscribe(request_body: dict, client: Worker) -> dict:
             else:
                 return response(request_id=request_id, error_code=20)
         except Exception as er:
-            server_log(LogTypes.INFO, f"stratum subscribe reading params", er)
+            server_log(LogTypes.INFO, f"Stratum subscribe reading params", er)
 
         notify_ = ''  # session id
         extra_nonce1 = str(("%0.2X" % random.randint(
@@ -135,5 +135,5 @@ def submit(request_body: dict, client: Worker) -> dict:
         else:
             return response(request_id=request_body['id'], error_code=error_code, result=False)
     except Exception as er:
-        server_log(LogTypes.ERROR, f"stratum submit", er)
+        server_log(LogTypes.ERROR, f"Stratum submit", er)
         return response(request_id=request_body['id'], error_code=error_code, result=False)

@@ -175,12 +175,12 @@ class Server:
                 await self.cancel_all_prior_jobs()
             return True
         else:
-            server_log(LogTypes.WARNING, f"getting bitcoin block template failed")
+            server_log(LogTypes.WARNING, f"Getting bitcoin block template failed")
             return False
 
     async def cancel_all_prior_jobs(self):
         if len(self._onLineUsers) > 0:
-            server_log(LogTypes.WARNING, f"New block received cancelling all other jobs")
+            server_log(LogTypes.WARNING, f"A new block was received, canceling all other jobs.")
             for i in range(len(self._onLineUsers)):
                 key = list(self._onLineUsers[i].keys())[0]
                 client = self._onLineUsers[i][key]
