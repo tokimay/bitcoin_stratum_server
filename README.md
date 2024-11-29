@@ -1,7 +1,7 @@
 # Python stratum server
 ### Simple implementation of stratum server
 
-This is a ***Bitcoin stratum mining pool server.</br>
+This is a ***Bitcoin stratum mining pool*** server.</br>
 who explain and communicate between a miner and a stratum server. </br>
 Server tested in ***main-net*** and ***reg-test*** using  ***[wildrig-multi](https://github.com/andru-kun/wildrig-multi)*** and ***[cpuminer-opt](https://github.com/JayDDee/cpuminer-opt)***.</br>
 #### Notice: block submitting method just tested in reg-test (if I could do that in main net, I will leave git forever :stuck_out_tongue_winking_eye: )
