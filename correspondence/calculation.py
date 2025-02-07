@@ -35,7 +35,9 @@ def double_sha256_reverse(data: str) -> str:
     return bytearray.fromhex(sha256(sha256(data)))[::-1].hex().zfill(64)
 
 def header_hash(header: str) -> str:
-    solution_hash = (hashlib.sha256(hashlib.sha256(bytearray.fromhex(header)).digest()).digest())[::-1].hex()
+    solution_hash = hashlib.sha256(
+        hashlib.sha256(bytearray.fromhex(header)).digest()
+    ).digest()[::-1].hex()
     return solution_hash
 
 
