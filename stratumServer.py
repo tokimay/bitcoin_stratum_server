@@ -100,27 +100,31 @@ class Server:
                 alive_job_interval = 180  # refresh
                 self.server_status()
             else:
-                alive_job_interval -= 1  # means 1 sec pass
+                alive_job_interval =- 1  # means 1 sec pass
 
     async def _send_clients_job(self, send_alive_job_interval: int):
-        for i in range(len(self._onLineUsers)):
-            key = list(self._onLineUsers[i].keys())[0]
-            client = self._onLineUsers[i][key]
-            if (((client.get_subscribed() or client.get_authorized()) and not client.get_has_prior_job())
-                    or (send_alive_job_interval == 0)):
-                is_send_job = False
-                if not is_send_job:
-                    is_send_job = await client.send_response_to_client(
-                        response_message=notify(client, notify_body=self._currentBitcoinNotifyTemplate))
-                if is_send_job:
-                    server_log(LogTypes.TEXT, f"Send job to client at"
-                                             f" {client.get_writer().get_extra_info('peername')}")
-                    client.set_has_prior_job(True)
-                else:
-                    server_log(LogTypes.IMPORTANT, f"Client connection at"
-                                                  f" {client.get_writer().get_extra_info('peername')} lost")
-                    self._onLineUsers.pop(i)
-                    client.get_writer().close()
+        if len(self._onLineUsers) > 0:
+            for i in range(len(self._onLineUsers)):
+                key = list(self._onLineUsers[i].keys())[0]
+                client = self._onLineUsers[i][key]
+                if (((client.get_subscribed() or client.get_authorized()) and not client.get_has_prior_job())
+                        or (send_alive_job_interval == 0)):
+                    is_send_job = False
+                    if not is_send_job:
+                        is_send_job = await client.send_response_to_client(
+                            response_message=notify(client, notify_body=self._currentBitcoinNotifyTemplate))
+                    if is_send_job:
+                        server_log(LogTypes.TEXT, f"Send job to client at"
+                                                 f" {client.get_writer().get_extra_info('peername')}")
+                        client.set_has_prior_job(True)
+                        server_log(LogTypes.SPECIAL, f"Current active job",
+                                                       f"{self._currentBitcoinNotifyTemplate[0]}")
+                    else:
+                        server_log(LogTypes.IMPORTANT, f"Client connection at"
+                                                      f" {client.get_writer().get_extra_info('peername')} lost")
+                        self._onLineUsers.pop(i)
+                        client.get_writer().close()
+        return True
 
     async def set_difficulty(self):
         while True:
@@ -128,33 +132,35 @@ class Server:
             result_difficulty = asyncio.run_coroutine_threadsafe(self._set_difficulty(), self._loop)
 
     async def _set_difficulty(self):
-        for i in range(len(self._onLineUsers)):
-            key = list(self._onLineUsers[i].keys())[0]
-            client = self._onLineUsers[i][key]
-            if client.get_subscribed() or client.get_authorized():
-                # if True client did not submit share for 4 minute
-                if datetime.now() - client.get_last_share_time() > timedelta(minutes=4):
-                    client.set_last_share_time(datetime.now())
+        if len(self._onLineUsers) > 0:
+            for i in range(len(self._onLineUsers)):
+                key = list(self._onLineUsers[i].keys())[0]
+                client = self._onLineUsers[i][key]
+                if client.get_subscribed() or client.get_authorized():
+                    # if True client did not submit share for 4 minute
+                    if datetime.now() - client.get_last_share_time() > timedelta(minutes=4):
+                        client.set_last_share_time(datetime.now())
 
-                    # decrease client difficulty
-                    _currentDifficulty = client.get_current_difficulty()
-                    if _currentDifficulty > 2:
-                        client.set_current_difficulty(_currentDifficulty / 2)
+                        # decrease client difficulty
+                        _currentDifficulty = client.get_current_difficulty()
+                        if _currentDifficulty > 2:
+                            client.set_current_difficulty(_currentDifficulty / 2)
 
-                    is_send_dif = False
-                    if not is_send_dif:
-                        is_send_dif = await client.send_response_to_client(
-                            response_message=set_difficulty(client, client.get_current_difficulty()))
-                    if is_send_dif:
-                        server_log(LogTypes.TEXT, f"Work difficulty set to "
-                                                 f"{LogTypes.IMPORTANT}{client.get_current_difficulty()}{LogTypes.TEXT}"
-                                                 f" for client at"
-                                                 f" {client.get_writer().get_extra_info('peername')}")
-                    else:
-                        server_log(LogTypes.IMPORTANT, f"Client connection at"
-                                                      f" {client.get_writer().get_extra_info('peername')} lost")
-                        self._onLineUsers.pop(i)
-                        client.get_writer().close()
+                            is_send_dif = False
+                            if not is_send_dif:
+                                is_send_dif = await client.send_response_to_client(
+                                    response_message=set_difficulty(client, client.get_current_difficulty()))
+                            if is_send_dif:
+                                server_log(LogTypes.TEXT, f"Work difficulty set to "
+                                                         f"{LogTypes.IMPORTANT}{client.get_current_difficulty()}{LogTypes.TEXT}"
+                                                         f" for client at"
+                                                         f" {client.get_writer().get_extra_info('peername')}")
+                            else:
+                                server_log(LogTypes.IMPORTANT, f"Client connection at"
+                                                              f" {client.get_writer().get_extra_info('peername')} lost")
+                                self._onLineUsers.pop(i)
+                                client.get_writer().close()
+        return True
 
     async def bitcoin_block(self):
         while True:
