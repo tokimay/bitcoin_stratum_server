@@ -100,7 +100,7 @@ class Server:
                 alive_job_interval = 180  # refresh
                 self.server_status()
             else:
-                alive_job_interval =- 1  # means 1 sec pass
+                alive_job_interval -= 1  # means 1 sec pass
 
     async def _send_clients_job(self, send_alive_job_interval: int):
         if len(self._onLineUsers) > 0:
@@ -177,7 +177,7 @@ class Server:
             current_block_height=self._bitcoinCurrentBlockHeight)
         if self._currentBitcoinNotifyTemplate:
             if tmp != self._bitcoinCurrentBlockHeight and tmp: # and tmp means tmp is not 0
-                delete_btc_prior_job_data()
+                #delete_btc_prior_job_data()
                 await self.cancel_all_prior_jobs()
             return True
         else:
