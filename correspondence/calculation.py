@@ -189,7 +189,7 @@ def get_block_row(job_id: str,  extra_nonce1: str, extra_nonce2: str, time: str,
         try:
             job = json.load(open(f"activeJobs/BTC_{job_id}.json"))
         except Exception as er:
-            raise ServerException(f"{er}.{LogTypes.TEXT} job {LogTypes.IMPORTANT}{job_id}{LogTypes.TEXT} not found")
+            raise ServerException(f"{LogTypes.TEXT} can not open job {LogTypes.IMPORTANT}{job_id}{LogTypes.TEXT}. {er}")
         ''' block header '''
         # 4 bytes version in little-endian
         version = job['version']
