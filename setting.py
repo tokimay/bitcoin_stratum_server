@@ -60,12 +60,13 @@ def load_setting() -> bool:
         return False
 
 
-def delete_btc_prior_job_data():
+def delete_btc_prior_job_data(active_job: str):
     try:
         job_dir = 'activeJobs'
         for fileName in os.listdir(job_dir):
-            if fileName.startswith("BTC_"):
+            if fileName.startswith("BTC_") and not fileName.endswith(active_job):
                 os.remove(os.path.join(job_dir, fileName))
+                server_log(LogTypes.TEXT, f"{fileName.split('.json')[0]} is no longer an active job.")
     except Exception as er:
         server_log(LogTypes.ERROR, f"deleteBtcPrionJobData", er)
 
