@@ -146,7 +146,7 @@ def notify_body(current_block_height: int) -> tuple[list, int]:
 
         block_height = block['result']['height']
 
-        job_id = (time.zfill(8)) + ((hex(block_height)[2:]).zfill(8))
+        job_id = (time.zfill(10)) + ((hex(block_height)[2:]).zfill(10))
 
         # create job
         job = {
