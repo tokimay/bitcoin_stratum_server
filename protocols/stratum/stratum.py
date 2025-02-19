@@ -95,10 +95,10 @@ def submit(request_body: dict, client: Worker) -> dict:
         #request_id = client.get_request_id()
         worker_name = request_body['params'][0]
         job_id = request_body['params'][1]
-        if job_id != client.get_last_job_id():
+        if not job_id in client.get_last_job_id():
             error_code = 21
             raise ServerException(f"received job id {LogTypes.SPECIAL}{job_id}{LogTypes.TEXT} expect "
-                                  f"{LogTypes.SPECIAL}{client.get_last_job_id()}")
+                                  f"{LogTypes.SPECIAL}{client.get_last_job_id()[-1]}")
         extra_nonce1 = client.get_worker_extra_nonce1()
         extra_nonce2 = request_body['params'][2]
         time = request_body['params'][3]
