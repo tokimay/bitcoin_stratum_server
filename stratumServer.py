@@ -177,7 +177,6 @@ class Server:
             current_block_height=self._bitcoinCurrentBlockHeight)
         if self._currentBitcoinNotifyTemplate:
             if tmp != self._bitcoinCurrentBlockHeight and tmp: # and tmp means tmp is not 0
-                #delete_btc_prior_job_data()
                 await self.cancel_all_prior_jobs()
             return True
         else:
@@ -191,10 +190,12 @@ class Server:
                 key = list(self._onLineUsers[i].keys())[0]
                 client = self._onLineUsers[i][key]
                 client.set_has_prior_job(False)
+            # delete all jobs in other height
+            #delete_btc_prior_job_data(hex(self._bitcoinCurrentBlockHeight)[2:])
 
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))  # setWorking directory an scrypt location
-    delete_btc_prior_job_data()
+    delete_btc_prior_job_data("delete_all_jobs") # no job end with this string
     stratumServer = Server(bind_ip='localhost', bind_port=3333)
     stratumServer.run_server()
