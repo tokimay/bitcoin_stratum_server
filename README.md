@@ -3,7 +3,7 @@
 
 This is a ***Bitcoin stratum mining pool*** server.</br>
 who explain and communicate between a miner and a stratum server. </br>
-Server tested in ***main-net*** and ***reg-test*** using  ***[wildrig-multi](https://github.com/andru-kun/wildrig-multi)*** and ***[cpuminer-opt](https://github.com/JayDDee/cpuminer-opt)***.</br>
+Server tested in ***main-net*** and ***reg-test*** using  ***[bitcoin_GPU_miner](https://github.com/tokimay/bitcoin_GPU_miner)*** and ***[wildrig-multi](https://github.com/andru-kun/wildrig-multi)*** and ***[cpuminer-opt](https://github.com/JayDDee/cpuminer-opt)***.</br>
 #### Notice: block submitting method just tested in reg-test (if I could do that in main net, I will leave git forever :stuck_out_tongue_winking_eye: )
 
 ### Valid method list:
