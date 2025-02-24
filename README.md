@@ -1,4 +1,4 @@
-# Python stratum server
+# Bitcoin stratum server
 ### Simple implementation of stratum server
 
 This is a ***Bitcoin stratum mining pool*** server.</br>
